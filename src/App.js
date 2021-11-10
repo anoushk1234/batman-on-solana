@@ -6,7 +6,7 @@ import { Program, Provider, web3 } from "@project-serum/anchor";
 import { useEffect, useState } from "react";
 import kp from "./keypair.json";
 // Constants
-const { SystemProgram } = web3;
+const { SystemProgram,Keypair } = web3;
 
 // Create a keypair for the account that will hold the GIF data.
 const arr = Object.values(kp._keypair.secretKey);
