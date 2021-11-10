@@ -153,10 +153,10 @@ const App = () => {
                       src={item.giflink ? item.giflink.toString() : null}
                       alt="giflinkimg"
                     />
-                    <div color="white">
+                    {/* <div color="white">
                       <p>
                         {item.userAddress ? item.userAddress.toString() : null}
-                      </p>
+                      </p> */}
                       {/* <button
                         style={{
                           height: "50px",
@@ -193,7 +193,7 @@ const App = () => {
                           />
                         </svg>
                       </button> */}
-                    </div>
+                    {/* </div> */}
                   </div>
                 ))
               : null}
