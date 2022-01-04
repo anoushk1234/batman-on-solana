@@ -1,9 +1,9 @@
 {
-  "version": "0.0.0",
-  "name": "mysolanagif",
+  "version": "0.1.0",
+  "name": "splits_program",
   "instructions": [
     {
-      "name": "startStuffOff",
+      "name": "initialize",
       "accounts": [
         {
           "name": "baseAccount",
@@ -24,34 +24,67 @@
       "args": []
     },
     {
-      "name": "addGif",
+      "name": "newSplit",
       "accounts": [
+        {
+          "name": "adminAccount",
+          "isMut": true,
+          "isSigner": true
+        },
         {
           "name": "baseAccount",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
           "isSigner": false
         }
       ],
       "args": [
         {
-          "name": "giflink",
-          "type": "string"
+          "name": "addresses",
+          "type": {
+            "vec": "publicKey"
+          }
+        },
+        {
+          "name": "percentages",
+          "type": {
+            "vec": "u64"
+          }
         }
       ]
     },
     {
-      "name": "voteGif",
+      "name": "sendSol",
       "accounts": [
         {
           "name": "baseAccount",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "adminAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "msgSender",
+          "isMut": false,
+          "isSigner": true
         }
       ],
       "args": [
         {
-          "name": "giflink",
-          "type": "string"
+          "name": "amount",
+          "type": "u64"
         }
       ]
     }
@@ -63,48 +96,43 @@
         "kind": "struct",
         "fields": [
           {
-            "name": "totalGifs",
+            "name": "inited",
+            "type": "bool"
+          },
+          {
+            "name": "totalSplits",
             "type": "u64"
           },
           {
-            "name": "gifList",
-            "type": {
-              "vec": {
-                "defined": "ItemStruct"
-              }
-            }
-          },
-          {
-            "name": "votes",
+            "name": "totalAmount",
             "type": "u64"
           }
         ]
       }
-    }
-  ],
-  "types": [
+    },
     {
-      "name": "ItemStruct",
+      "name": "AdminAccount",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "giflink",
-            "type": "string"
-          },
-          {
-            "name": "userAddress",
+            "name": "adminAddress",
             "type": "publicKey"
           },
           {
-            "name": "votes",
-            "type": "u64"
+            "name": "addresses",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "percentages",
+            "type": {
+              "vec": "u64"
+            }
           }
         ]
       }
     }
-  ],
-  "metadata": {
-    "address": "8Lc81NeVg8UUfQiM1dRsxRhfAn7exEixmXFUhR4vjnYs"
-  }
+  ]
 }

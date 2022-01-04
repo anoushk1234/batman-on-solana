@@ -14,7 +14,7 @@ const secret = new Uint8Array(arr);
 const baseAccount = web3.Keypair.fromSecretKey(secret);
 
 // Get our program's id form the IDL file.
-const programID = new PublicKey(idl.metadata.address);
+const programID = new PublicKey("4TqU7XzCcwmGZu89sYK2bLzsrLR4P4sAhVhSmgaxbNum");
 
 // Set our network to devent.
 const network = clusterApiUrl("devnet");
@@ -71,43 +71,43 @@ const App = () => {
     );
     return provider;
   };
-  const sendGif = async () => {
-    if (inputValue.length === 0) {
-      console.log("No gif link given!");
-      return;
-    }
-    console.log("Gif link:", inputValue);
-    try {
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider);
+  // const sendGif = async () => {
+  //   if (inputValue.length === 0) {
+  //     console.log("No gif link given!");
+  //     return;
+  //   }
+  //   console.log("Gif link:", inputValue);
+  //   try {
+  //     const provider = getProvider();
+  //     const program = new Program(idl, programID, provider);
 
-      await program.rpc.addGif(inputValue, {
-        accounts: {
-          baseAccount: baseAccount.publicKey,
-        },
-      });
-      console.log("GIF sucesfully sent to program", inputValue);
+  //     await program.rpc.addGif(inputValue, {
+  //       accounts: {
+  //         baseAccount: baseAccount.publicKey,
+  //       },
+  //     });
+  //     console.log("GIF sucesfully sent to program", inputValue);
 
-      // await getGifList();
-      setGifList([...gifList, inputValue]);
-    } catch (error) {
-      console.log("Error sending GIF:", error);
-    }
-  };
-  const upvote = async (giflink) => {
-    try {
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider);
+  //     // await getGifList();
+  //     setGifList([...gifList, inputValue]);
+  //   } catch (error) {
+  //     console.log("Error sending GIF:", error);
+  //   }
+  // };
+  // const upvote = async (giflink) => {
+  //   try {
+  //     const provider = getProvider();
+  //     const program = new Program(idl, programID, provider);
 
-      await program.rpc.voteGif(giflink, {
-        accounts: {
-          baseAccount: baseAccount.publicKey,
-        },
-      });
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
+  //     await program.rpc.voteGif(giflink, {
+  //       accounts: {
+  //         baseAccount: baseAccount.publicKey,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  // };
   const renderNotConnectedContainer = () => (
     <button
       className="cta-button connect-wallet-button"
@@ -140,7 +140,9 @@ const App = () => {
             value={inputValue}
             onChange={onInputChange}
           />
-          <button className="cta-button submit-gif-button" onClick={sendGif}>
+          <button className="cta-button submit-gif-button"
+          onClick={createGifAccount}
+          >
             Submit
           </button>
           <div className="gif-grid">
@@ -208,60 +210,60 @@ const App = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (walletAddress) {
-      console.log("Fetching GIF list...");
+  // useEffect(() => {
+  //   if (walletAddress) {
+  //     console.log("Fetching GIF list...");
 
-      // Call Solana Program
+  //     // Call Solana Program
 
-      // Set state
-      setGifList(async () => {
-        await getGifList();
-      });
-    }
-  }, [walletAddress]);
+  //     // Set state
+  //     setGifList(async () => {
+  //       await getGifList();
+  //     });
+  //   }
+  // }, [walletAddress]);
 
-  useEffect(() => {
-    if (walletAddress) {
-      console.log("Fetching GIF list...");
+  // useEffect(() => {
+  //   if (walletAddress) {
+  //     console.log("Fetching GIF list...");
 
-      // Call Solana program here.
+  //     // Call Solana program here.
 
-      // Set state
-      setGifList(async () => {
-        await getGifList();
-      });
-    }
-  }, [walletAddress]);
-  const getGifList = async () => {
-    try {
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider);
-      const account = await program.account.baseAccount.fetch(
-        baseAccount.publicKey
-      );
+  //     // Set state
+  //     setGifList(async () => {
+  //       await getGifList();
+  //     });
+  //   }
+  // }, [walletAddress]);
+  // const getGifList = async () => {
+  //   try {
+  //     const provider = getProvider();
+  //     const program = new Program(idl, programID, provider);
+  //     const account = await program.account.baseAccount.fetch(
+  //       baseAccount.publicKey
+  //     );
 
-      console.log("Got the account", account);
-      setGifList(account.gifList);
-    } catch (error) {
-      console.log("Error in getGifs: ", error);
-      setGifList(null);
-    }
-  };
+  //     console.log("Got the account", account);
+  //     setGifList(account.gifList);
+  //   } catch (error) {
+  //     console.log("Error in getGifs: ", error);
+  //     setGifList(null);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (walletAddress) {
-      console.log("Fetching GIF list...");
-      getGifList();
-    }
-  }, [walletAddress]);
+  // useEffect(() => {
+  //   if (walletAddress) {
+  //     console.log("Fetching GIF list...");
+  //     getGifList();
+  //   }
+  // }, [walletAddress]);
 
   const createGifAccount = async () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
       console.log("ping");
-      await program.rpc.startStuffOff({
+      await program.rpc.initialize({
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
@@ -273,7 +275,7 @@ const App = () => {
         "Created a new BaseAccount w/ address:",
         baseAccount.publicKey.toString()
       );
-      await getGifList();
+      
     } catch (error) {
       console.log("Error creating BaseAccount account:", error);
     }
